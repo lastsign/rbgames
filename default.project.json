@@ -3,6 +3,52 @@
   "tree": {
     "$className": "DataModel",
 
+    "Workspace": {
+      "$properties": {
+        "FilteringEnabled": true
+      },
+      "Baseplate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.38, 0.37, 0.38],
+          "Size": [512, 1, 512],
+          "Position": [0, -0.5, 0],
+          "TopSurface": "Smooth",
+          "BottomSurface": "Smooth"
+        }
+      },
+      "SpawnLocation": {
+        "$className": "SpawnLocation",
+        "$properties": {
+          "Anchored": true,
+          "Size": [12, 1, 12],
+          "Position": [0, 0.5, 0],
+          "Color": [0.13, 0.42, 0.8],
+          "TopSurface": "Smooth"
+        }
+      },
+      "Camera": {
+        "$className": "Camera",
+        "$properties": {
+          "CameraType": "Fixed",
+          "FieldOfView": 70
+        }
+      }
+    },
+
+    "Lighting": {
+      "$properties": {
+        "Ambient": [0.5, 0.5, 0.5],
+        "Brightness": 2,
+        "ColorShift_Bottom": [0, 0, 0],
+        "ColorShift_Top": [0, 0, 0],
+        "OutdoorAmbient": [0.5, 0.5, 0.5],
+        "ClockTime": 14,
+        "GeographicLatitude": 41.733
+      }
+    },
+
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"
@@ -22,6 +68,10 @@
     },
 
     "StarterPlayer": {
+      "$properties": {
+        "CharacterWalkSpeed": 16,
+        "CharacterJumpPower": 50
+      },
       "StarterPlayerScripts": {
         "Client": {
           "$path": "src/client"
