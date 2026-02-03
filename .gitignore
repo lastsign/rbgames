@@ -8,4 +8,6 @@
 sourcemap.json
 Packages/
 ServerPackages/
+Packages/*
+ServerPackages/*
 wally.lock
