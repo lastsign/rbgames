@@ -13,6 +13,7 @@ local RebirthService = require(script.Services.RebirthService)
 local DailyRewardService = require(script.Services.DailyRewardService)
 local ZoneService = require(script.Services.ZoneService)
 local WeaponService = require(script.Services.WeaponService)
+local ProductService = require(script.Services.ProductService)
 local ServerNetworker = require(script.Network.ServerNetworker)
 local MobSpawner = require(script.Systems.MobSpawner)
 local WorldBuilder = require(script.Systems.WorldBuilder)
@@ -24,6 +25,9 @@ WorldBuilder.Initialize()
 
 -- Initialize mob spawning (after world is built)
 MobSpawner.Initialize()
+
+-- Initialize Robux purchase handling
+ProductService.Initialize()
 
 -- Player joined
 Players.PlayerAdded:Connect(function(player)

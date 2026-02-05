@@ -12,11 +12,11 @@ local DefaultData: PlayerDataSchema.PlayerData = {
 	},
 
 	Stats = {
-		Strength = 10,
+		Strength = 15, -- Higher start for fast early kills (was 10)
 		Speed = 10,
 		Defense = 5,
-		CritChance = 0.05, -- 5%
-		CritMultiplier = 1.5,
+		CritChance = 0.08, -- 8% crit feels rewarding early (was 5%)
+		CritMultiplier = 1.8, -- Crits feel impactful (was 1.5)
 	},
 
 	Currencies = {

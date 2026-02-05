@@ -271,6 +271,7 @@ local function BuildZone(zoneName: string, zoneData: any, worldFolder: Folder)
 end
 
 -- Create a staircase between two heights
+-- startPos and endPos represent the TOP SURFACE heights (where player walks)
 local function CreateStairs(startPos: Vector3, endPos: Vector3, width: number, color: Color3, parent: Instance)
 	local heightDiff = endPos.Y - startPos.Y
 	local horizontalDist = ((endPos - startPos) * Vector3.new(1, 0, 1)).Magnitude
@@ -278,18 +279,33 @@ local function CreateStairs(startPos: Vector3, endPos: Vector3, width: number, c
 
 	-- Step height of 0.75 studs allows characters to walk up without jumping
 	local stepHeight = 0.75
-	local numSteps = math.ceil(math.abs(heightDiff) / stepHeight)
+	local numSteps = math.max(1, math.ceil(math.abs(heightDiff) / stepHeight))
 	local stepDepth = horizontalDist / numSteps
+	local stepRise = heightDiff / numSteps  -- Can be negative for descending stairs
+
+	local stairsFolder = Instance.new("Folder")
+	stairsFolder.Name = "Stairs"
+	stairsFolder.Parent = parent
 
 	for i = 0, numSteps - 1 do
 		local step = Instance.new("Part")
 		step.Name = "Step_" .. i
-		step.Size = Vector3.new(width, stepHeight, stepDepth + 0.5)
-		step.Position = startPos + direction * (i * stepDepth + stepDepth / 2) + Vector3.new(0, i * stepHeight + stepHeight / 2, 0)
+		step.Size = Vector3.new(width, 1, stepDepth + 0.5)
+
+		-- Top of step i should be at startPos.Y + (i+1) * stepRise
+		local stepTopY = startPos.Y + (i + 1) * stepRise
+		local stepCenterY = stepTopY - 0.5  -- Half the step height (1/2 = 0.5)
+
+		local horizontalOffset = direction * (i * stepDepth + stepDepth / 2)
+		step.Position = Vector3.new(
+			startPos.X + horizontalOffset.X,
+			stepCenterY,
+			startPos.Z + horizontalOffset.Z
+		)
 		step.Anchored = true
 		step.Color = color
 		step.Material = Enum.Material.Cobblestone
-		step.Parent = parent
+		step.Parent = stairsFolder
 	end
 end
 
@@ -299,64 +315,77 @@ local function CreatePaths(worldFolder: Folder)
 	pathsFolder.Name = "Paths"
 	pathsFolder.Parent = worldFolder
 
-	-- Path from Starter to Forest (flat)
+	-- Ground surfaces are at Y=5 (StarterZone, ForestZone, VolcanoZone) and Y=50 (MountainZone)
+	-- Paths are raised 0.1 studs above ground to avoid Z-fighting
+	-- Path with Size.Y=4 needs Position.Y=3.1 for top surface at Y=5.1
+
+	-- Path from Starter to Forest (flat, connects X=50 to X=150)
 	local path1 = Instance.new("Part")
 	path1.Name = "Path_Starter_Forest"
-	path1.Size = Vector3.new(200, 2, 20)
-	path1.Position = Vector3.new(100, 0, 0)
+	path1.Size = Vector3.new(100, 4, 20)
+	path1.Position = Vector3.new(100, 3.1, 0)  -- Top at Y=5.1 (above ground)
 	path1.Anchored = true
 	path1.Color = Color3.fromRGB(139, 90, 43)
 	path1.Material = Enum.Material.Cobblestone
 	path1.Parent = pathsFolder
 
-	-- Stairs from Forest to Mountain (height difference: 5 to 50)
+	-- Stairs from Forest to Mountain (height difference: Y=5.1 to Y=50.1)
 	CreateStairs(
-		Vector3.new(200, 3, 0),  -- Start at forest edge
-		Vector3.new(400, 48, 0), -- End at mountain
+		Vector3.new(250, 5.1, 0),  -- Start at forest edge (above ground)
+		Vector3.new(350, 50.1, 0), -- End at mountain edge (above ground)
 		20,
 		Color3.fromRGB(100, 100, 110),
 		pathsFolder
 	)
 
-	-- Path on mountain plateau
+	-- Path on mountain plateau (connects stairs to mountain zone center)
 	local path2flat = Instance.new("Part")
 	path2flat.Name = "Path_Mountain_Plateau"
-	path2flat.Size = Vector3.new(50, 2, 20)
-	path2flat.Position = Vector3.new(425, 48, 0)
+	path2flat.Size = Vector3.new(100, 4, 20)
+	path2flat.Position = Vector3.new(400, 48.1, 0)  -- Top at Y=50.1 (above ground)
 	path2flat.Anchored = true
 	path2flat.Color = Color3.fromRGB(100, 100, 110)
 	path2flat.Material = Enum.Material.Cobblestone
 	path2flat.Parent = pathsFolder
 
-	-- Path from Mountain to Volcano (going down and to the side)
-	-- First, stairs going down
+	-- Stairs from Mountain down toward Volcano (Y=50.1 to Y=5.1)
 	CreateStairs(
-		Vector3.new(450, 48, 0),
-		Vector3.new(500, 3, 0),
+		Vector3.new(450, 50.1, 0),  -- Start at mountain edge
+		Vector3.new(550, 5.1, 0),   -- End at ground level
 		20,
 		Color3.fromRGB(80, 70, 70),
 		pathsFolder
 	)
 
-	-- Then flat path to volcano
+	-- Flat path turning toward volcano (Z direction)
 	local path3 = Instance.new("Part")
 	path3.Name = "Path_To_Volcano"
-	path3.Size = Vector3.new(20, 2, 200)
-	path3.Position = Vector3.new(550, 3, 100)
+	path3.Size = Vector3.new(20, 4, 150)
+	path3.Position = Vector3.new(550, 3.1, 75)  -- Top at Y=5.1
 	path3.Anchored = true
 	path3.Color = Color3.fromRGB(60, 50, 50)
 	path3.Material = Enum.Material.Cobblestone
 	path3.Parent = pathsFolder
 
-	-- Final stretch to volcano zone
+	-- Final stretch to volcano zone (connects to VolcanoZone at X=600, Z=200)
 	local path4 = Instance.new("Part")
 	path4.Name = "Path_Volcano_Final"
-	path4.Size = Vector3.new(100, 2, 20)
-	path4.Position = Vector3.new(550, 3, 200)
+	path4.Size = Vector3.new(100, 4, 20)
+	path4.Position = Vector3.new(550, 3.1, 150)  -- Top at Y=5.1
 	path4.Anchored = true
 	path4.Color = Color3.fromRGB(60, 50, 50)
 	path4.Material = Enum.Material.Cobblestone
 	path4.Parent = pathsFolder
+
+	-- Corner piece connecting path3 and path4 to volcano zone
+	local path5 = Instance.new("Part")
+	path5.Name = "Path_Volcano_Corner"
+	path5.Size = Vector3.new(50, 4, 50)
+	path5.Position = Vector3.new(575, 3.1, 175)  -- Top at Y=5.1
+	path5.Anchored = true
+	path5.Color = Color3.fromRGB(60, 50, 50)
+	path5.Material = Enum.Material.Cobblestone
+	path5.Parent = pathsFolder
 
 	print("[WorldBuilder] Created paths between zones")
 end
@@ -366,7 +395,7 @@ local function CreateSpawnPoint(worldFolder: Folder)
 	local spawnLocation = Instance.new("SpawnLocation")
 	spawnLocation.Name = "SpawnLocation"
 	spawnLocation.Size = Vector3.new(8, 1, 8)
-	spawnLocation.Position = Vector3.new(0, 3, -30)
+	spawnLocation.Position = Vector3.new(0, 5.5, -30)  -- Just above ground surface (Y=5)
 	spawnLocation.Anchored = true
 	spawnLocation.CanCollide = false
 	spawnLocation.Transparency = 0.5

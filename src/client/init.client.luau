@@ -15,6 +15,7 @@ local ShopScreen = require(script.UI.Screens.ShopScreen)
 local ZoneScreen = require(script.UI.Screens.ZoneScreen)
 local RebirthScreen = require(script.UI.Screens.RebirthScreen)
 local WeaponShopScreen = require(script.UI.Screens.WeaponShopScreen)
+local RobuxShopScreen = require(script.UI.Screens.RobuxShopScreen)
 
 local player = Players.LocalPlayer
 
@@ -28,6 +29,7 @@ ShopScreen.Create()
 ZoneScreen.Create()
 RebirthScreen.Create()
 WeaponShopScreen.Create()
+RobuxShopScreen.Create()
 
 -- Initialize controllers
 MobHealthController.Initialize()

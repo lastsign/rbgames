@@ -11,13 +11,15 @@ export type UpgradeData = {
 	StatType: string, -- Maps to Stats field
 }
 
+-- BALANCE: Upgrades are powerful to incentivize purchase
+-- Each upgrade gives noticeable boost (equivalent to 2-3 level ups)
 local UpgradeConfig: { [string]: UpgradeData } = {
 	Strength = {
 		Name = "Strength",
 		DisplayName = "Strength Upgrade",
 		Description = "Increase your damage output",
-		BaseCost = 100,
-		BaseIncrease = 5,
+		BaseCost = 75, -- Cheaper to start buying early (was 100)
+		BaseIncrease = 8, -- Bigger impact (was 5)
 		StatType = "Strength",
 	},
 
@@ -26,7 +28,7 @@ local UpgradeConfig: { [string]: UpgradeData } = {
 		DisplayName = "Speed Upgrade",
 		Description = "Increase your attack speed",
 		BaseCost = 100,
-		BaseIncrease = 5,
+		BaseIncrease = 6, -- (was 5)
 		StatType = "Speed",
 	},
 
@@ -35,7 +37,7 @@ local UpgradeConfig: { [string]: UpgradeData } = {
 		DisplayName = "Defense Upgrade",
 		Description = "Reduce damage taken",
 		BaseCost = 100,
-		BaseIncrease = 3,
+		BaseIncrease = 4, -- (was 3)
 		StatType = "Defense",
 	},
 
@@ -43,8 +45,8 @@ local UpgradeConfig: { [string]: UpgradeData } = {
 		Name = "CritChance",
 		DisplayName = "Crit Chance Upgrade",
 		Description = "Increase critical hit chance",
-		BaseCost = 200,
-		BaseIncrease = 0.01, -- +1% per upgrade
+		BaseCost = 150, -- More accessible (was 200)
+		BaseIncrease = 0.02, -- +2% per upgrade (was 1%)
 		StatType = "CritChance",
 	},
 
@@ -52,8 +54,8 @@ local UpgradeConfig: { [string]: UpgradeData } = {
 		Name = "CritMultiplier",
 		DisplayName = "Crit Damage Upgrade",
 		Description = "Increase critical hit damage",
-		BaseCost = 250,
-		BaseIncrease = 0.1, -- +0.1x per upgrade
+		BaseCost = 200, -- (was 250)
+		BaseIncrease = 0.15, -- +0.15x per upgrade (was 0.1)
 		StatType = "CritMultiplier",
 	},
 }

@@ -18,24 +18,25 @@ function MenuButtons.Create()
 	-- Buttons container (right side)
 	buttonsFrame = Instance.new("Frame")
 	buttonsFrame.Name = "MenuButtons"
-	buttonsFrame.Size = UDim2.new(0, 120, 0, 300)
-	buttonsFrame.Position = UDim2.new(1, -130, 0.5, -150)
+	buttonsFrame.Size = UDim2.new(0, 120, 0, 370)
+	buttonsFrame.Position = UDim2.new(1, -130, 0.5, -185)
 	buttonsFrame.BackgroundTransparency = 1
 	buttonsFrame.Parent = screen
 
 	local listLayout = Instance.new("UIListLayout")
-	listLayout.Padding = UDim.new(0, 10)
+	listLayout.Padding = UDim.new(0, 8)
 	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	listLayout.Parent = buttonsFrame
 
 	-- Create buttons
 	local buttons = {
 		{ Name = "Shop", Icon = "🛒", Color = Color3.fromRGB(255, 200, 0), Order = 1 },
-		{ Name = "Weapons", Icon = "⚔️", Color = Color3.fromRGB(150, 100, 200), Order = 2 },
-		{ Name = "Zones", Icon = "🗺️", Color = Color3.fromRGB(100, 150, 255), Order = 3 },
-		{ Name = "Pets", Icon = "🐾", Color = Color3.fromRGB(255, 150, 200), Order = 4 },
-		{ Name = "Rebirth", Icon = "♻️", Color = Color3.fromRGB(200, 100, 255), Order = 5 },
-		{ Name = "Daily", Icon = "🎁", Color = Color3.fromRGB(150, 255, 150), Order = 6 },
+		{ Name = "Gems", Icon = "💎", Color = Color3.fromRGB(0, 180, 255), Order = 2 }, -- NEW: Robux shop
+		{ Name = "Weapons", Icon = "⚔️", Color = Color3.fromRGB(150, 100, 200), Order = 3 },
+		{ Name = "Zones", Icon = "🗺️", Color = Color3.fromRGB(100, 150, 255), Order = 4 },
+		{ Name = "Pets", Icon = "🐾", Color = Color3.fromRGB(255, 150, 200), Order = 5 },
+		{ Name = "Rebirth", Icon = "♻️", Color = Color3.fromRGB(200, 100, 255), Order = 6 },
+		{ Name = "Daily", Icon = "🎁", Color = Color3.fromRGB(150, 255, 150), Order = 7 },
 	}
 
 	for _, buttonData in buttons do
@@ -89,9 +90,12 @@ function MenuButtons.OnButtonClick(menuName: string)
 	local ZoneScreen = require(script.Parent.Parent.Screens.ZoneScreen)
 	local RebirthScreen = require(script.Parent.Parent.Screens.RebirthScreen)
 	local WeaponShopScreen = require(script.Parent.Parent.Screens.WeaponShopScreen)
+	local RobuxShopScreen = require(script.Parent.Parent.Screens.RobuxShopScreen)
 
 	if menuName == "Shop" then
 		ShopScreen.Toggle()
+	elseif menuName == "Gems" then
+		RobuxShopScreen.Toggle()
 	elseif menuName == "Weapons" then
 		WeaponShopScreen.Toggle()
 	elseif menuName == "Zones" then

@@ -16,6 +16,8 @@ export type WeaponData = {
 	Description: string?,
 }
 
+-- BALANCE: Coin weapons are decent, Gem weapons are significantly better
+-- This creates desire to purchase Gems while keeping F2P viable
 local WeaponConfig: { [string]: WeaponData } = {
 	-- Starter weapon (free)
 	WoodenSword = {
@@ -31,18 +33,18 @@ local WeaponConfig: { [string]: WeaponData } = {
 		Description = "A simple wooden training sword.",
 	},
 
-	-- Coin weapons (progression)
+	-- Coin weapons (F2P progression) - affordable early upgrades
 	IronSword = {
 		ID = "IronSword",
 		DisplayName = "Iron Sword",
 		Type = "Melee",
 		Rarity = "Common",
-		DamageMultiplier = 1.15,
+		DamageMultiplier = 1.25, -- Noticeable upgrade (was 1.15)
 		AttackSpeed = 1.6,
 		AttackRange = 8,
-		Cost = 500,
+		Cost = 200, -- Affordable early (was 500)
 		CostType = "Coins",
-		Description = "A sturdy iron blade.",
+		Description = "A sturdy iron blade. +25% damage!",
 	},
 
 	BattleAxe = {
@@ -50,12 +52,12 @@ local WeaponConfig: { [string]: WeaponData } = {
 		DisplayName = "Battle Axe",
 		Type = "Melee",
 		Rarity = "Rare",
-		DamageMultiplier = 1.3,
+		DamageMultiplier = 1.5, -- Big upgrade (was 1.3)
 		AttackSpeed = 1.2,
 		AttackRange = 9,
-		Cost = 750,
+		Cost = 600, -- Mid-game purchase (was 750)
 		CostType = "Coins",
-		Description = "Heavy but powerful.",
+		Description = "Heavy but powerful. +50% damage!",
 	},
 
 	SteelBlade = {
@@ -63,12 +65,12 @@ local WeaponConfig: { [string]: WeaponData } = {
 		DisplayName = "Steel Blade",
 		Type = "Melee",
 		Rarity = "Rare",
-		DamageMultiplier = 1.35,
-		AttackSpeed = 1.8,
+		DamageMultiplier = 1.6, -- (was 1.35)
+		AttackSpeed = 1.9, -- Faster (was 1.8)
 		AttackRange = 8,
-		Cost = 2500,
+		Cost = 1500, -- (was 2500)
 		CostType = "Coins",
-		Description = "A well-crafted steel sword.",
+		Description = "A well-crafted steel sword. +60% damage!",
 	},
 
 	Warhammer = {
@@ -76,27 +78,27 @@ local WeaponConfig: { [string]: WeaponData } = {
 		DisplayName = "Warhammer",
 		Type = "Melee",
 		Rarity = "Epic",
-		DamageMultiplier = 1.5,
-		AttackSpeed = 1.0,
+		DamageMultiplier = 1.8, -- (was 1.5)
+		AttackSpeed = 1.1, -- Slightly faster (was 1.0)
 		AttackRange = 7,
-		Cost = 3000,
+		Cost = 3500, -- (was 3000)
 		CostType = "Coins",
-		Description = "Slow but devastating.",
+		Description = "Slow but devastating. +80% damage!",
 	},
 
-	-- Gem weapons (premium)
+	-- Gem weapons (premium) - clearly superior, worth buying
 	MysticBlade = {
 		ID = "MysticBlade",
 		DisplayName = "Mystic Blade",
 		Type = "Melee",
 		Rarity = "Epic",
-		DamageMultiplier = 1.6,
-		AttackSpeed = 1.7,
-		AttackRange = 9,
-		Cost = 100,
+		DamageMultiplier = 2.2, -- Much better than coins (was 1.6)
+		AttackSpeed = 2.0, -- Very fast (was 1.7)
+		AttackRange = 10,
+		Cost = 75, -- Accessible first purchase (was 100)
 		CostType = "Gems",
-		RequiredLevel = 15,
-		Description = "Infused with magical energy.",
+		RequiredLevel = 10, -- Available earlier (was 15)
+		Description = "⚡ Infused with magical energy. +120% damage!",
 	},
 
 	DragonSlayer = {
@@ -104,13 +106,28 @@ local WeaponConfig: { [string]: WeaponData } = {
 		DisplayName = "Dragon Slayer",
 		Type = "Melee",
 		Rarity = "Legendary",
-		DamageMultiplier = 2.0,
-		AttackSpeed = 1.5,
-		AttackRange = 10,
-		Cost = 500,
+		DamageMultiplier = 3.0, -- Massive (was 2.0)
+		AttackSpeed = 2.2, -- Very fast (was 1.5)
+		AttackRange = 12,
+		Cost = 350, -- (was 500)
 		CostType = "Gems",
-		RequiredLevel = 30,
-		Description = "Legendary blade of dragon hunters.",
+		RequiredLevel = 20, -- Earlier access (was 30)
+		Description = "🐉 Legendary blade of dragon hunters. +200% damage!",
+	},
+
+	-- NEW: Early gem weapon for quick conversion
+	ShadowDagger = {
+		ID = "ShadowDagger",
+		DisplayName = "Shadow Dagger",
+		Type = "Melee",
+		Rarity = "Rare",
+		DamageMultiplier = 1.8,
+		AttackSpeed = 2.5, -- Very fast attacks
+		AttackRange = 6,
+		Cost = 25, -- Very cheap entry point
+		CostType = "Gems",
+		RequiredLevel = 5,
+		Description = "✨ Fast and deadly. Perfect for beginners!",
 	},
 }
 

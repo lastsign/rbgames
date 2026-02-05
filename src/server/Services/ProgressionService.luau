@@ -11,12 +11,26 @@ local DefaultData = require(ReplicatedStorage.Shared.Data.DefaultData)
 
 local ProgressionService = {}
 
--- Stat increases per level
-local STAT_INCREASE_PER_LEVEL = {
-	Strength = 2,
-	Speed = 2,
-	Defense = 1,
-}
+-- Stat increases per level (tiered for fast start, slow mid-game)
+-- Returns stat increases based on player level
+local function GetStatIncreasesForLevel(level: number): { Strength: number, Speed: number, Defense: number }
+	if level <= 10 then
+		-- Fast early game: big gains make player feel powerful
+		return { Strength = 5, Speed = 3, Defense = 2 }
+	elseif level <= 20 then
+		-- Slowdown begins: growth decreases
+		return { Strength = 3, Speed = 2, Defense = 1 }
+	elseif level <= 35 then
+		-- Mid-game wall: minimal free gains, upgrades needed
+		return { Strength = 1, Speed = 1, Defense = 1 }
+	else
+		-- Late game: tiny gains, rebirth or paid upgrades required
+		return { Strength = 1, Speed = 0, Defense = 0 }
+	end
+end
+
+-- Legacy constant for backwards compatibility
+local STAT_INCREASE_PER_LEVEL = { Strength = 2, Speed = 2, Defense = 1 }
 
 -- Award experience to player
 function ProgressionService.AwardExperience(player: Player, amount: number)
@@ -44,9 +58,10 @@ function ProgressionService.AwardExperience(player: Player, amount: number)
 				leveledUp = true
 				newLevel = data.Progression.Level
 
-				-- Increase stats
-				for statName, increase in STAT_INCREASE_PER_LEVEL do
-					if data.Stats[statName] then
+				-- Increase stats (tiered based on level)
+				local levelStatIncreases = GetStatIncreasesForLevel(data.Progression.Level)
+				for statName, increase in levelStatIncreases do
+					if data.Stats[statName] and increase > 0 then
 						data.Stats[statName] += increase
 						statIncreases[statName] = (statIncreases[statName] or 0) + increase
 					end

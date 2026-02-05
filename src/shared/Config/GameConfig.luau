@@ -29,11 +29,12 @@ local GameConfig = {
 	TeleportCooldown = 2, -- Seconds between zone teleports
 
 	-- Shop settings
-	UpgradeCostScaling = 1.15, -- Multiplier for each upgrade level
+	-- First few upgrades cheap, then scaling kicks in hard
+	UpgradeCostScaling = 1.20, -- Steeper scaling (was 1.15)
 
-	-- Rebirth settings
-	RebirthLevelRequirement = 50,
-	RebirthBonusPerLevel = 0.1, -- 10% bonus per rebirth
+	-- Rebirth settings - achievable earlier for faster loop
+	RebirthLevelRequirement = 35, -- Lower requirement (was 50)
+	RebirthBonusPerLevel = 0.15, -- 15% bonus per rebirth (was 10%)
 
 	-- Daily rewards
 	DailyRewardCooldown = 24, -- Hours

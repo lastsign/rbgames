@@ -7,6 +7,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local DataService = require(script.Parent.DataService)
 local ProgressionService = require(script.Parent.ProgressionService)
 local WeaponService = require(script.Parent.WeaponService)
+local ProductService = require(script.Parent.ProductService)
 local ServerNetworker = require(script.Parent.Parent.Network.ServerNetworker)
 local FormulaCalculator = require(ReplicatedStorage.Shared.Utils.FormulaCalculator)
 local MobConfig = require(ReplicatedStorage.Shared.Config.MobConfig)
@@ -129,13 +130,14 @@ function CombatService.AttackMob(player: Player, mobType: string): { Success: bo
 		print(`[CombatService] Using existing {mobType} - HP: {mob.CurrentHealth}/{mob.MaxHealth}`)
 	end
 
-	-- Calculate damage
+	-- Calculate damage (including GamePass bonuses)
 	local petMultipliers = GetPetMultipliers(playerData)
+	local gamePassMultipliers = ProductService.GetGamePassMultipliers(player)
 	local isCrit = math.random() < playerData.Stats.CritChance
 	local damage = FormulaCalculator.CalculateDamage(
 		playerData.Stats.Strength,
 		playerData.Progression.RebirthLevel,
-		petMultipliers.Damage,
+		petMultipliers.Damage * gamePassMultipliers.Damage, -- Apply GamePass damage boost
 		isCrit,
 		playerData.Stats.CritMultiplier,
 		weaponMultiplier
@@ -161,14 +163,14 @@ function CombatService.AttackMob(player: Player, mobType: string): { Success: bo
 		local xpReward = FormulaCalculator.CalculateXPReward(
 			mobConfig.Level,
 			zoneMultiplier,
-			petMultipliers.XP,
+			petMultipliers.XP * gamePassMultipliers.XP, -- Apply GamePass XP boost
 			playerData.Progression.RebirthLevel
 		)
 
 		local coinReward = FormulaCalculator.CalculateCoinReward(
 			mobConfig.Level,
 			zoneMultiplier,
-			petMultipliers.Coin,
+			petMultipliers.Coin * gamePassMultipliers.Coins, -- Apply GamePass coin boost
 			playerData.Progression.RebirthLevel
 		)
 
